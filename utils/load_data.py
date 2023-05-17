@@ -4,7 +4,7 @@ import numpy as np
 import torch
 
 
-def get_data(fold, split, representation_level, coords=0):
+def get_data(fold, split, representation_level, coords=0, resolution=[1935, 2400]):
     # if split == "validation":
     #     split_append = "val"
     # elif split == "testing":
@@ -14,9 +14,9 @@ def get_data(fold, split, representation_level, coords=0):
 
     # Path to the data
     # /home/schobs/Documents/PhD/WeiGP/Mini-GP/data/fold0.json
-    data_path = f"data/fold{fold}/{split}/{representation_level}/"
+    data_path = f"Mini-GP/data/fold{fold}/{split}/{representation_level}/"
     # Load the JSON file
-    json_path = f"data/fold{fold}.json"
+    json_path = f"Mini-GP/data/fold{fold}.json"
     with open(json_path) as f:
         data_json = json.load(f)
 

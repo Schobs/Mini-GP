@@ -153,7 +153,7 @@ class cigp(nn.Module):
         )
         return nll
 
-    def train_adam(self, niteration=10, lr=0.1):
+    def train_adam(self, niteration=10, lr=0.001):
         # adam optimizer
         # uncommont the following to enable
         optimizer = torch.optim.Adam(self.parameters(), lr=lr)
@@ -206,8 +206,17 @@ if __name__ == "__main__":
 
     fold = 0
     feature_level = "B"
+
     xtr, ytr = get_data(fold, "training", feature_level)
+
+    ytr_mean = torch.mean(ytr, axis=0)
+    ytr_std = torch.std(ytr, axis=0)
+
+    ytr = (ytr - ytr_mean) / ytr_std
+
     xte, yte = get_data(fold, "testing", feature_level)
+
+    yte = (yte - ytr_mean) / ytr_std
 
     xtr = xtr.to(device)
     ytr = ytr.to(device)
@@ -215,7 +224,7 @@ if __name__ == "__main__":
     yte = yte.to(device)
 
     model = cigp(xtr, ytr).to(device)
-    model.train_adam(200000, lr=0.01)
+    model.train_adam(200000, lr=0.00001)
     # model.train_bfgs(50, lr=0.1)
 
     with torch.no_grad():
